@@ -7,6 +7,7 @@ import main.java.dictionary.request.RequestParser;
 import main.java.dictionary.entity.ExampleSentence;
 import main.java.dictionary.entity.Word;
 import main.java.dictionary.factory.DefinitionFactory;
+import main.java.dictionary.repository.DictionaryRepository;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,17 +17,22 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Dictionary App started!");
-        Word word = new Word("hello");
+        DictionaryRepository repository = new DictionaryRepository();
         DefinitionFactory factory = new DefinitionFactory();
-        Definition definition =factory.creatDefinition("-n","hello");
-        ExampleSentence exampleSentence = new ExampleSentence("hello, my friens","xin chao ban iu cua toi");
-        ExampleSentence exampleSentence1 = new ExampleSentence("hello, my mom","xin chao me iu cua con");
-
-        System.out.println(definition.getType());
-        System.out.println(definition.getMeaning());
+        Word word = new Word("Hello");
+        Definition definition = factory.creatDefinition("-n","xin chao");
+        word.addDefinetion(definition);
+        repository.save(word);
+        Word result  =repository.find("Hello");
+        if (result != null){
+            System.out.println(result.getKeyWord());
+            for (Definition item : result.getDefinitions()){
+                System.out.println(item.getMeaning());
+                System.out.println(item.getType()   );
+            }
+        }else {
+            System.out.println("ko tim thay");
         }
 
-
-            }
+    }
+}
