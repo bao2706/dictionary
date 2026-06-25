@@ -1,38 +1,27 @@
-package main.java.dictionary;
-import main.java.dictionary.entity.Definition;
-import main.java.dictionary.entity.DefinitionType;
-import main.java.dictionary.factory.DefinitionFactory;
-import main.java.dictionary.request.Request;
-import main.java.dictionary.request.RequestParser;
-import main.java.dictionary.entity.ExampleSentence;
-import main.java.dictionary.entity.Word;
-import main.java.dictionary.factory.DefinitionFactory;
-import main.java.dictionary.repository.DictionaryRepository;
+    package main.java.dictionary;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+    import main.java.dictionary.entity.Word;
+    import main.java.dictionary.repository.DictionaryRepository;
 
-public class Main {
+    public class Main {
 
-    public static void main(String[] args) {
-        DictionaryRepository repository = new DictionaryRepository();
-        DefinitionFactory factory = new DefinitionFactory();
-        Word word = new Word("Hello");
-        Definition definition = factory.creatDefinition("-n","xin chao");
-        word.addDefinetion(definition);
-        repository.save(word);
-        Word result  =repository.find("Hello");
-        if (result != null){
-            System.out.println(result.getKeyWord());
-            for (Definition item : result.getDefinitions()){
-                System.out.println(item.getMeaning());
-                System.out.println(item.getType()   );
+        public static void main(String[] args) {
+
+            DictionaryRepository repository =
+                    new DictionaryRepository();
+
+            Word positive = new Word("positive");
+            Word apple = new Word("apple");
+            Word book = new Word("book");
+
+            repository.save(positive);
+            repository.save(apple);
+            repository.save(book);
+
+            System.out.println("Danh sách từ:");
+
+            for (Word word : repository.findAll()) {
+                System.out.println(word.getKeyWord());
             }
-        }else {
-            System.out.println("ko tim thay");
         }
-
     }
-}
