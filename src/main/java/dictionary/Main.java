@@ -12,10 +12,12 @@
 
             Word positive = new Word("positive");
             Word apple = new Word("apple");
+            Word applepaine = new Word("applepine");
             Word book = new Word("book");
 
             repository.save(positive);
             repository.save(apple);
+            repository.save(applepaine);
             repository.save(book);
 
             System.out.println("Danh sách từ:");
