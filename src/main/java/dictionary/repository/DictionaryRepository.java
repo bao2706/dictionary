@@ -34,13 +34,15 @@ public class DictionaryRepository {
         return new LinkedList<>(wordList);
     }
     private void addWordinAlphabeticaOrder(Word newWord){
-        int index = 0;
-        while(index < wordList.size()){
-            Word currentWord =wordList.get(index);
-            if (newWord.getKeyWord().compareToIgnoreCase(currentWord.getKeyWord())<0){
+        int index;
+
+        for (index = 0; index < wordList.size(); index++) {
+            Word currentWord = wordList.get(index);
+
+            if (newWord.getKeyWord()
+                    .compareToIgnoreCase(currentWord.getKeyWord()) < 0) {
                 break;
             }
-            index++;
         }
         wordList.add(index,newWord);
     }
