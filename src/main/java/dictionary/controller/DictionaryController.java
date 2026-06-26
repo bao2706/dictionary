@@ -23,9 +23,43 @@ public class DictionaryController {
             handleLookup(request);
             return;
         }
+        if (action.equals("define")){
+            handleDefine(request);
+            return;
+        }
         System.out.println("chuc nang nay chua ho tro " +action);
     }
 
+    private void handleDefine(Request request){
+        String keyWord = request.getKeyWord();
+        if (request.getParams().isEmpty()){
+            System.out.println("chua co dinh nghia");
+            return;
+        }
+        String option = request.getParams().get(0);
+        System.out.println("nhap dinh nghia");
+        String sentence  = scanner.nextLine();
+
+        ExampleSentence example =null;
+        if (optionCheck(option)){
+            System.out.println("nhap cau vi du");
+            String Example = scanner.nextLine();
+            if (!Example.isBlank()){
+                System.out.println("nghia cau");
+                String sentenceExample = scanner.nextLine();
+                example =
+                        new ExampleSentence(sentence ,sentenceExample);
+            }
+    }
+    }
+    private  boolean optionCheck(String option){
+        return option.equals("-n")
+                || option.equals("--noun")
+                || option.equals("-a")
+                || option.equals("--adjective")
+                || option.equals("-v")
+                || option.equals("--verb");
+    }
     private void handleLookup(Request request) {
         String keyWord = request.getKeyWord();
         Word word = service.lookup(keyWord);

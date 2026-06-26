@@ -19,44 +19,12 @@ public class Main {
 
         DictionaryService service =
                 DictionaryService.getInstance();
-
-        Word positive = new Word("positive");
-
-        Definition definition =
-                new Definition(
-                        DefinitionType.ADJECTIVE,
-                        "tích cực"
-                );
-
-        ExampleSentence exampleSentence =
-                new ExampleSentence(
-                        "a positive factor",
-                        "một nhân tố tích cực"
-                );
-
-        definition.addExamples(exampleSentence);
-
-        positive.addDefinetion(definition);
-
-        service.saveWord(positive);
-
-        RequestParser parser =
-                new RequestParser();
-
-        DictionaryController controller =
-                new DictionaryController(
-                        scanner,
-                        service
-                );
-
-        System.out.print("Action: ");
-
+        RequestParser parser = new RequestParser();
+        DictionaryController controller = new DictionaryController(scanner,service);
+        System.out.println("Action ");
         String input = scanner.nextLine();
-
         Request request = parser.parse(input);
-
         controller.handle(request);
-
         scanner.close();
+        }
     }
-}
