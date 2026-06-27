@@ -8,6 +8,9 @@ import main.java.dictionary.service.DictionaryService;
 import main.java.dictionary.util.DictionaryExporter;
 
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class DictionaryController {
 
@@ -15,31 +18,36 @@ public class DictionaryController {
     private DictionaryService service;
     private DictionaryExporter exporter;
 
+    private Map<String, Consumer<Request>> actionHandlers;
+
     public DictionaryController(Scanner scanner, DictionaryService service) {
         this.scanner = scanner;
         this.service = service;
         this.exporter = new DictionaryExporter();
+
+        this.actionHandlers = new HashMap<>();
+        actionHandlers.put(
+                "lookup", this::handleLookup
+        );
+        actionHandlers.put(
+                "define", this::handleDefine
+        );
+        actionHandlers.put(
+                "export", this::handleExport
+        );
+        actionHandlers.put(
+                "drop", this::handleDrop
+        );
     }
 
     public void handle(Request request) {
-        String action = request.getAction();
-        if (action.equals("lookup")) {
-            handleLookup(request);
+        String action = request.getAction().toLowerCase();
+        Consumer<Request> handler = actionHandlers.get(action);
+        if (handler == null) {
+            System.out.println("chuc nang nay chua ho tro " + action);
             return;
         }
-        if (action.equals("define")) {
-            handleDefine(request);
-            return;
-        }
-        if (action.equals("drop")) {
-            handleDrop(request);
-            return;
-        }
-        if (action.equalsIgnoreCase("export")) {
-            handleExport(request);
-            return;
-        }
-        System.out.println("chuc nang nay chua ho tro " + action);
+        handler.accept(request);
     }
 
     private void handleDrop(Request request) {
@@ -77,6 +85,14 @@ public class DictionaryController {
                         new ExampleSentence(sentence, sentenceExample);
             }
         }
+        service.define(
+                option,
+                keyWord,
+                sentence,
+                example
+        );
+
+        System.out.println("Saved!");
     }
 
     private boolean optionCheck(String option) {
@@ -90,11 +106,11 @@ public class DictionaryController {
 
     private void handleExport(Request request) {
         String filePath = request.getKeyWord();
-        if (filePath == null || filePath.isEmpty()){
+        if (filePath == null || filePath.isEmpty()) {
             System.out.println("vui long nhap duong dan file");
             return;
         }
-        exporter.export(filePath,service.findAllWords());
+        exporter.export(filePath, service.findAllWords());
     }
 
     private void handleLookup(Request request) {
@@ -109,8 +125,8 @@ public class DictionaryController {
             System.out.println(item.getType());
             System.out.println(item.getMeaning());
             for (ExampleSentence exampleSentence : item.getExamples()) {
-                System.out.println(" cau "+exampleSentence.getMeaning());
-                System.out.println("nghia "+exampleSentence.getSentence());
+                System.out.println(" cau " + exampleSentence.getMeaning());
+                System.out.println("nghia " + exampleSentence.getSentence());
             }
         }
     }

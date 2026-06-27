@@ -5,15 +5,20 @@ import main.java.dictionary.entity.Word;
 import main.java.dictionary.factory.DefinitionFactory;
 import main.java.dictionary.repository.DictionaryRepository;
 import java.util.List;
+import main.java.dictionary.repository.WordFileStorage;
 
 public class DictionaryService {
     private static DictionaryService instance;
 
     private final DictionaryRepository repository;
     private final DefinitionFactory definitionFactory;
+    private final WordFileStorage fileStorage;
+
+
     private DictionaryService(){
         repository = new DictionaryRepository();
         definitionFactory = new DefinitionFactory();
+        fileStorage = new WordFileStorage("data");
     }
     public static DictionaryService getInstance(){
         if (instance == null){
@@ -34,6 +39,7 @@ public class DictionaryService {
             return false;
         }
         repository.delete(normalizedKeyword);
+        fileStorage.delete(normalizedKeyword);
         return true;
     }
     public List<Word> findAllWords(){
@@ -55,6 +61,7 @@ public class DictionaryService {
         }
         word.addDefinetion(definition);
         repository.save(word);
+        fileStorage.save(word);
         return word;
     }
 }

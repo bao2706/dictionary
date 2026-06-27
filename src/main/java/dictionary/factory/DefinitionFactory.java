@@ -18,6 +18,7 @@ public class DefinitionFactory {
                 type= DefinitionType.PRONUNCIATION;
                 break;
             case "-adj":
+            case "-a":
             case "--adjective":
                 type = DefinitionType.ADJECTIVE;
                 break;
