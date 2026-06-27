@@ -27,7 +27,25 @@ public class DictionaryController {
             handleDefine(request);
             return;
         }
+        if (action.equals("drop")){
+            handleDrop(request);
+            return;
+        }
         System.out.println("chuc nang nay chua ho tro " +action);
+    }
+
+    private void handleDrop(Request request) {
+        String keyWord = request.getKeyWord();
+        if( keyWord == null || keyWord.isBlank()){
+            System.out.println("ban chua nhap tu can xoa");
+            return;
+        }
+        boolean deleted = service.drop(keyWord);
+        if (deleted){
+            System.out.println("@"+keyWord+ " dropped!!");
+        }else {
+            System.out.println("ko tim thay tu "+ keyWord   );
+        }
     }
 
     private void handleDefine(Request request){

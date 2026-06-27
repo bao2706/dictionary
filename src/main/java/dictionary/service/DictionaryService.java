@@ -4,6 +4,7 @@ import main.java.dictionary.entity.ExampleSentence;
 import main.java.dictionary.entity.Word;
 import main.java.dictionary.factory.DefinitionFactory;
 import main.java.dictionary.repository.DictionaryRepository;
+import java.util.List;
 
 public class DictionaryService {
     private static DictionaryService instance;
@@ -26,6 +27,17 @@ public class DictionaryService {
     }
     public Word lookup(String keyWord){
         return repository.find(keyWord);
+    }
+    public boolean drop(String keyWord){
+        String normalizedKeyword = keyWord.trim().toLowerCase();
+        if (!repository.exists(keyWord)){
+            return false;
+        }
+        repository.delete(normalizedKeyword);
+        return true;
+    }
+    public List<Word> findAllWords(){
+        return repository.findAll();
     }
     public Word define(String option,
                        String keyWord,
